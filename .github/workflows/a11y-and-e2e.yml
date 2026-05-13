@@ -1,0 +1,86 @@
+name: A11y + E2E
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  storefront:
+    name: Storefront e2e + a11y
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.0.9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.18.0
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter storefront exec playwright install --with-deps chromium webkit firefox
+      - run: pnpm --filter storefront build
+      - run: pnpm --filter storefront e2e
+        env:
+          CI: '1'
+
+  admin:
+    name: Admin e2e
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.0.9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.18.0
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter admin exec playwright install --with-deps chromium
+      - run: pnpm --filter admin build
+      - run: pnpm --filter admin e2e
+        env:
+          CI: '1'
+
+  pos:
+    name: POS e2e
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.0.9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.18.0
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter pos exec playwright install --with-deps chromium
+      - run: pnpm --filter pos build
+      - run: pnpm --filter pos e2e
+        env:
+          CI: '1'
+
+  size-limit:
+    name: Bundle size budget
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.0.9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.18.0
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - name: size-limit
+        run: npx --yes size-limit@^11.1.6
