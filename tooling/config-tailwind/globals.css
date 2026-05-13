@@ -1,0 +1,150 @@
+@import "tailwindcss";
+
+@theme {
+  /* Stone neutral ramp */
+  --color-stone-50: #fafaf7;
+  --color-stone-100: #f4f3ee;
+  --color-stone-200: #e6e3d8;
+  --color-stone-300: #cfcab8;
+  --color-stone-400: #a39d87;
+  --color-stone-500: #7c7660;
+  --color-stone-600: #5e5849;
+  --color-stone-700: #454035;
+  --color-stone-800: #2e2a23;
+  --color-stone-900: #1c1a15;
+  --color-stone-950: #0e0d0a;
+
+  /* Terracotta accent */
+  --color-terracotta-50: #fdf4f0;
+  --color-terracotta-100: #fae5dc;
+  --color-terracotta-200: #f5c9b6;
+  --color-terracotta-300: #eda386;
+  --color-terracotta-400: #dc7d5b;
+  --color-terracotta-500: #c46a4f;
+  --color-terracotta-600: #a8553f;
+  --color-terracotta-700: #874236;
+  --color-terracotta-800: #623128;
+  --color-terracotta-900: #3f1f1a;
+  --color-terracotta-950: #23110e;
+
+  /* Sage success */
+  --color-sage-50: #f4f6f2;
+  --color-sage-100: #e3e8db;
+  --color-sage-200: #c5d0b3;
+  --color-sage-300: #9bad83;
+  --color-sage-400: #7a8c66;
+  --color-sage-500: #5e7150;
+  --color-sage-600: #475a3d;
+  --color-sage-700: #374631;
+  --color-sage-800: #243023;
+  --color-sage-900: #16201a;
+
+  /* Amber warning */
+  --color-amber-50: #fdf8ec;
+  --color-amber-100: #fbecc8;
+  --color-amber-200: #f6d896;
+  --color-amber-300: #efbc5e;
+  --color-amber-400: #e69f3e;
+  --color-amber-500: #c98429;
+  --color-amber-600: #a5651e;
+  --color-amber-700: #7d4a18;
+
+  /* Danger */
+  --color-danger-50: #fdf2f1;
+  --color-danger-100: #fbe1de;
+  --color-danger-200: #f6bdb6;
+  --color-danger-300: #ef8c80;
+  --color-danger-400: #e15a4d;
+  --color-danger-500: #c93b2f;
+  --color-danger-600: #a02a22;
+  --color-danger-700: #7a1f1a;
+
+  --color-surface: var(--color-stone-50);
+  --color-surface-raised: #ffffff;
+  --color-surface-sunken: var(--color-stone-100);
+  --color-text: var(--color-stone-900);
+  --color-text-muted: var(--color-stone-700);
+  --color-text-subtle: var(--color-stone-500);
+  --color-border: var(--color-stone-200);
+  --color-border-strong: var(--color-stone-300);
+  --color-accent: var(--color-terracotta-600);
+  --color-accent-hover: var(--color-terracotta-700);
+  --color-accent-foreground: #ffffff;
+  --color-success: var(--color-sage-600);
+  --color-warning: var(--color-amber-500);
+  --color-danger: var(--color-danger-600);
+
+  --font-display-latin: "Fraunces", Georgia, serif;
+  --font-sans-latin: "General Sans", "Inter", system-ui, sans-serif;
+  --font-display-arabic: "29LT Bukra", "Cairo", sans-serif;
+  --font-sans-arabic: "IBM Plex Sans Arabic", "Cairo", sans-serif;
+  --font-mono: "JetBrains Mono", Menlo, monospace;
+
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-3xl: 28px;
+  --radius-full: 9999px;
+}
+
+[data-theme="dark"] {
+  --color-surface: var(--color-stone-950);
+  --color-surface-raised: var(--color-stone-900);
+  --color-surface-sunken: #000000;
+  --color-text: var(--color-stone-50);
+  --color-text-muted: var(--color-stone-300);
+  --color-text-subtle: var(--color-stone-400);
+  --color-border: var(--color-stone-800);
+  --color-border-strong: var(--color-stone-700);
+  --color-accent: var(--color-terracotta-400);
+  --color-accent-hover: var(--color-terracotta-300);
+  --color-accent-foreground: var(--color-stone-950);
+  --color-success: var(--color-sage-400);
+  --color-warning: var(--color-amber-400);
+  --color-danger: var(--color-danger-400);
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    font-family: var(--font-sans-latin);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  html[lang="ar"] {
+    font-family: var(--font-sans-arabic);
+  }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

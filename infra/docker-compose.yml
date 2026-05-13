@@ -1,0 +1,88 @@
+# Local dev infra for the nasij project.
+#
+# IMPORTANT: every service is bound to an OFFSET host port so it does not clash
+# with other Postgres/Redis/Meilisearch/Mailpit/MinIO instances that may already
+# be running on this machine for other projects. Adjust by editing the
+# corresponding *_HOST_PORT env var below.
+
+name: nasij-dev
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: nasij-postgres
+    environment:
+      POSTGRES_USER: nasij
+      POSTGRES_PASSWORD: nasij
+      POSTGRES_DB: nasij
+    ports:
+      - "${POSTGRES_HOST_PORT:-55432}:5432"
+    volumes:
+      - nasij-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nasij -d nasij"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: nasij-redis
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "${REDIS_HOST_PORT:-56379}:6379"
+    volumes:
+      - nasij-redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  meilisearch:
+    image: getmeili/meilisearch:v1.12
+    container_name: nasij-meilisearch
+    environment:
+      MEILI_ENV: development
+      MEILI_NO_ANALYTICS: "true"
+      MEILI_MASTER_KEY: nasij-dev-master-key
+    ports:
+      - "${MEILI_HOST_PORT:-57700}:7700"
+    volumes:
+      - nasij-meili-data:/meili_data
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:7700/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  mailpit:
+    image: axllent/mailpit:v1.21
+    container_name: nasij-mailpit
+    ports:
+      - "${MAILPIT_SMTP_HOST_PORT:-51025}:1025"
+      - "${MAILPIT_UI_HOST_PORT:-58025}:8025"
+
+  minio:
+    image: quay.io/minio/minio:RELEASE.2025-01-20T14-49-07Z
+    container_name: nasij-minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: nasij
+      MINIO_ROOT_PASSWORD: nasij-secret
+    ports:
+      - "${MINIO_API_HOST_PORT:-59000}:9000"
+      - "${MINIO_CONSOLE_HOST_PORT:-59001}:9001"
+    volumes:
+      - nasij-minio-data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:9000/minio/health/ready"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  nasij-postgres-data:
+  nasij-redis-data:
+  nasij-meili-data:
+  nasij-minio-data:

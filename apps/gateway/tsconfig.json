@@ -1,0 +1,6 @@
+{
+  "extends": "@nasij/tsconfig/node.json",
+  "compilerOptions": { "outDir": "dist", "rootDir": "src", "noEmit": false, "declaration": false },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts"]
+}

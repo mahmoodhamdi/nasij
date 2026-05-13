@@ -1,0 +1,17 @@
+{
+  "name": "@nasij/tailwind-config",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "license": "UNLICENSED",
+  "main": "./index.mjs",
+  "exports": {
+    ".": "./index.mjs",
+    "./tokens": "./tokens.mjs",
+    "./preset": "./preset.mjs",
+    "./globals.css": "./globals.css"
+  },
+  "peerDependencies": {
+    "tailwindcss": "^4.0.0"
+  }
+}

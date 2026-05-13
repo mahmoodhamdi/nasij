@@ -1,0 +1,55 @@
+name: Bug report
+description: Something is not working as intended.
+title: "bug: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for filing a bug. Please be as specific as you can.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What is broken? One or two sentences.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction steps
+      description: Numbered steps. Include URLs, commands, sample data.
+      placeholder: |
+        1. Go to /…
+        2. Click on …
+        3. Observe …
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected vs actual
+    validations:
+      required: true
+  - type: dropdown
+    id: app
+    attributes:
+      label: Affected app
+      options:
+        - storefront
+        - admin
+        - pos
+        - gateway
+        - shared package
+    validations:
+      required: true
+  - type: input
+    id: commit
+    attributes:
+      label: Commit SHA
+      placeholder: e.g. 1a2b3c4
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: OS, browser, viewport, locale (ar/en).

@@ -1,0 +1,6 @@
+{
+  "extends": "@nasij/tsconfig/vite-react.json",
+  "compilerOptions": { "paths": { "~/*": ["./src/*"] } },
+  "include": ["src", "vite.config.ts"],
+  "exclude": ["node_modules", "dist", "e2e", "**/*.test.*"]
+}

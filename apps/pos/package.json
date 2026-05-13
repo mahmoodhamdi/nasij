@@ -1,0 +1,48 @@
+{
+  "name": "pos",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "license": "UNLICENSED",
+  "scripts": {
+    "dev": "vite --port ${PORT:-5173}",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --port ${PORT:-5173}",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "e2e": "playwright test",
+    "a11y": "playwright test --grep @a11y",
+    "clean": "rm -rf dist .turbo coverage playwright-report test-results"
+  },
+  "dependencies": {
+    "@nasij/api": "workspace:*",
+    "@nasij/auth": "workspace:*",
+    "@nasij/i18n": "workspace:*",
+    "@nasij/ui": "workspace:*",
+    "idb": "^8.0.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@nasij/eslint-config": "workspace:*",
+    "@nasij/tailwind-config": "workspace:*",
+    "@nasij/tsconfig": "workspace:*",
+    "@playwright/test": "^1.49.1",
+    "@tailwindcss/vite": "^4.0.0-beta.8",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "@vitejs/plugin-react": "^4.3.4",
+    "@vitest/coverage-v8": "^2.1.8",
+    "eslint": "^9.17.0",
+    "jsdom": "^25.0.1",
+    "tailwindcss": "^4.0.0-beta.8",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.6",
+    "vite-plugin-pwa": "^0.21.1",
+    "vitest": "^2.1.8"
+  }
+}

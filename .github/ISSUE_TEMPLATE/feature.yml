@@ -1,0 +1,36 @@
+name: Feature request
+description: Propose a new feature or improvement.
+title: "feat: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What problem does this solve? Who is the user?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: How might we solve it? Include screens, sketches, or references.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: dropdown
+    id: app
+    attributes:
+      label: Target app
+      options:
+        - storefront
+        - admin
+        - pos
+        - gateway
+        - shared package
+        - cross-cutting
+    validations:
+      required: true
