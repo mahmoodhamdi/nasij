@@ -1,0 +1,42 @@
+name: Lighthouse
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/storefront/**'
+      - 'packages/ui/**'
+      - 'packages/i18n/**'
+      - 'tooling/config-tailwind/**'
+      - 'lighthouserc.cjs'
+      - '.github/workflows/lighthouse.yml'
+  push:
+    branches: [main]
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.0.9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.18.0
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter storefront build
+      - name: Start app
+        run: pnpm --filter storefront start &
+      - name: Wait for app
+        run: |
+          for i in {1..40}; do
+            if curl -s http://localhost:3000/en > /dev/null; then exit 0; fi
+            sleep 2
+          done
+          echo "Storefront did not start within 80s" >&2
+          exit 1
+      - name: Run Lighthouse CI
+        run: npx --yes @lhci/cli@0.14.0 autorun --config=./lighthouserc.cjs
