@@ -6,3 +6,4 @@ export { Card, CardHeader, CardTitle, CardDescription, CardBody, CardFooter } fr
 export { Badge, type BadgeProps, badgeVariants } from './components/badge.js';
 export { VisuallyHidden } from './components/visually-hidden.js';
 export { Spinner } from './components/spinner.js';
+export { ProductCard, type ProductCardProps } from './components/product-card.js';
