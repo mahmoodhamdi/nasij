@@ -1,32 +1,36 @@
+import Link from 'next/link';
+
 import { Card, CardBody, CardDescription, CardHeader, CardTitle } from '@nasij/ui';
 
+import { AdminShell } from '~/components/admin-shell.js';
+
 const navCards = [
-  { title: 'Orders', description: 'Process, fulfill, and refund.' },
-  { title: 'Products', description: 'Create, edit, and publish.' },
-  { title: 'Customers', description: 'Lifetime value, segments, GDPR.' },
-  { title: 'Inventory', description: 'Stock per variant, per location.' },
-  { title: 'Discounts', description: 'Codes, BOGO, free shipping, gift cards.' },
-  { title: 'Staff', description: 'Invite team, assign roles, revoke sessions.' },
+  { href: '/orders', title: 'Orders', description: 'Process, fulfill, and refund.', metric: '128 pending' },
+  { href: '/products', title: 'Products', description: 'Create, edit, and publish.', metric: '5 published' },
+  { href: '/customers', title: 'Customers', description: 'Lifetime value, segments, GDPR.', metric: '1,243 total' },
+  { href: '/inventory', title: 'Inventory', description: 'Stock per variant, per location.', metric: '2 low-stock' },
+  { href: '/discounts', title: 'Discounts', description: 'Codes, BOGO, free shipping, gift cards.', metric: '4 active' },
+  { href: '/staff', title: 'Staff', description: 'Invite team, assign roles, revoke sessions.', metric: '3 members' },
 ];
 
 const DashboardPage = () => (
-  <main className="mx-auto max-w-6xl px-6 py-12">
-    <header className="mb-10">
-      <p className="text-xs uppercase tracking-[0.2em] text-text-subtle">Nasij admin</p>
-      <h1 className="font-display-latin text-4xl font-medium text-text">Dashboard</h1>
-    </header>
+  <AdminShell title="Dashboard" description="Today at a glance.">
     <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {navCards.map((card) => (
-        <Card key={card.title}>
-          <CardHeader>
-            <CardTitle>{card.title}</CardTitle>
-            <CardDescription>{card.description}</CardDescription>
-          </CardHeader>
-          <CardBody />
-        </Card>
+        <Link key={card.title} href={card.href} className="block">
+          <Card className="transition-shadow hover:shadow-md">
+            <CardHeader>
+              <CardTitle>{card.title}</CardTitle>
+              <CardDescription>{card.description}</CardDescription>
+            </CardHeader>
+            <CardBody>
+              <p className="text-sm text-text-subtle">{card.metric}</p>
+            </CardBody>
+          </Card>
+        </Link>
       ))}
     </section>
-  </main>
+  </AdminShell>
 );
 
 export default DashboardPage;
