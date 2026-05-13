@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@nasij/i18n": "workspace:*",
-    "@react-email/components": "^0.0.32",
+    "@react-email/components": "^1.0.12",
     "@react-email/render": "^1.0.4"
   },
   "peerDependencies": {
