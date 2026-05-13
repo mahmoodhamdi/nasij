@@ -3,6 +3,9 @@ import { useState } from 'react';
 import { Button } from '@nasij/ui';
 
 import { addLine, removeLine, type Line, summarize } from '../lib/cart.js';
+import { renderReceiptHtml } from '../lib/receipt.js';
+
+import { PaymentPad } from './payment-pad.js';
 
 interface RegisterShellProps {
   onSignOut: () => void;
@@ -12,11 +15,99 @@ const demoProducts = [
   { sku: 'NSJ-KFT-AMB-M-AMBER', titleEn: 'Amber kaftan (M)', unitPriceMinor: 240_000 },
   { sku: 'NSJ-TRS-LIN-M-STONE', titleEn: 'Linen trousers (M)', unitPriceMinor: 195_000 },
   { sku: 'NSJ-SHR-OVR-S-SAGE', titleEn: 'Oversized shirt (S)', unitPriceMinor: 165_000 },
+  { sku: 'NSJ-OVS-MEN-L-STONE', titleEn: "Men's overshirt (L)", unitPriceMinor: 220_000 },
+  { sku: 'NSJ-ACC-SLK-STONE', titleEn: 'Silk scarf', unitPriceMinor: 95_000 },
 ] as const;
+
+type Stage = 'shopping' | 'paying' | 'complete';
 
 export const RegisterShell = ({ onSignOut }: RegisterShellProps) => {
   const [lines, setLines] = useState<Line[]>([]);
+  const [stage, setStage] = useState<Stage>('shopping');
+  const [lastReceipt, setLastReceipt] = useState<string | null>(null);
   const totals = summarize(lines, { taxRateBasisPoints: 1400 });
+
+  const finishSale = (
+    result:
+      | { method: 'cash'; tenderedMinor: number; changeMinor: number }
+      | { method: 'card' },
+  ) => {
+    const html = renderReceiptHtml({
+      storeName: 'Nasij',
+      storeLine1: 'Zamalek, Cairo',
+      receiptNumber: `R-${Date.now().toString(36).toUpperCase()}`,
+      cashier: 'Sales Staff',
+      registerName: 'Front 1',
+      placedAt: new Date(),
+      locale: 'en',
+      lines: lines.map((line) => ({
+        titleEn: line.titleEn,
+        quantity: line.quantity,
+        unitPriceMinor: line.unitPriceMinor,
+        lineTotalMinor: line.unitPriceMinor * line.quantity,
+      })),
+      subtotalMinor: totals.subtotalMinor,
+      discountMinor: totals.discountMinor,
+      taxMinor: totals.taxMinor,
+      totalMinor: totals.totalMinor,
+      paymentMethod: result.method,
+      tenderedMinor: result.method === 'cash' ? result.tenderedMinor : undefined,
+      changeMinor: result.method === 'cash' ? result.changeMinor : undefined,
+    });
+    setLastReceipt(html);
+    setStage('complete');
+  };
+
+  if (stage === 'complete') {
+    return (
+      <main className="grid min-h-dvh place-items-center bg-surface-sunken p-4">
+        <div className="flex max-w-md flex-col gap-4 rounded-2xl bg-surface-raised p-8 shadow-lg">
+          <h1 className="font-display-latin text-2xl text-text">Sale complete</h1>
+          <p className="text-text-muted">Receipt ready to print.</p>
+          <Button
+            size="lg"
+            onClick={() => {
+              if (!lastReceipt) return;
+              const w = window.open('', '_blank', 'width=320,height=600');
+              if (w) {
+                w.document.write(lastReceipt);
+                w.document.close();
+                w.print();
+              }
+            }}
+          >
+            Print receipt
+          </Button>
+          <Button
+            size="lg"
+            variant="outline"
+            onClick={() => {
+              setLines([]);
+              setLastReceipt(null);
+              setStage('shopping');
+            }}
+          >
+            New sale
+          </Button>
+          <Button size="sm" variant="ghost" onClick={onSignOut}>
+            Sign out
+          </Button>
+        </div>
+      </main>
+    );
+  }
+
+  if (stage === 'paying') {
+    return (
+      <main className="grid min-h-dvh place-items-center bg-surface-sunken p-4">
+        <PaymentPad
+          totalMinor={totals.totalMinor}
+          onComplete={finishSale}
+          onCancel={() => setStage('shopping')}
+        />
+      </main>
+    );
+  }
 
   return (
     <main className="grid min-h-dvh grid-cols-1 gap-4 bg-surface-sunken p-4 lg:grid-cols-[1fr_360px]">
@@ -80,6 +171,14 @@ export const RegisterShell = ({ onSignOut }: RegisterShellProps) => {
             <dd>EGP {(totals.totalMinor / 100).toFixed(2)}</dd>
           </div>
         </dl>
+        <Button
+          size="lg"
+          className="mt-6 w-full"
+          disabled={lines.length === 0}
+          onClick={() => setStage('paying')}
+        >
+          Take payment
+        </Button>
       </aside>
     </main>
   );
