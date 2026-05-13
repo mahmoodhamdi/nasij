@@ -5,6 +5,8 @@ import { directionFor } from '@nasij/i18n';
 
 import '../globals.css';
 
+import { CartProvider } from '~/components/cart-provider.js';
+import { SiteHeader } from '~/components/site-header.js';
 import { requireLocale } from '~/lib/i18n.js';
 
 export const metadata: Metadata = {
@@ -25,7 +27,12 @@ const RootLayout = async ({ children, params }: LayoutProps) => {
 
   return (
     <html lang={locale} dir={dir} suppressHydrationWarning>
-      <body>{children}</body>
+      <body>
+        <CartProvider>
+          <SiteHeader locale={locale} />
+          {children}
+        </CartProvider>
+      </body>
     </html>
   );
 };
