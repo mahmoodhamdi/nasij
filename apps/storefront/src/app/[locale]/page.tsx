@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import { Button } from '@nasij/ui';
 
 import { getTranslator, requireLocale } from '~/lib/i18n.js';
@@ -24,9 +26,11 @@ const HomePage = async ({ params }: PageProps) => {
           {t('storefront', 'home.hero.subtitle')}
         </p>
         <div className="flex gap-3">
-          <Button size="lg">{t('common', 'nav.shop')}</Button>
-          <Button size="lg" variant="ghost">
-            {t('common', 'nav.collections')}
+          <Button size="lg" asChild>
+            <Link href={`/${locale}/shop`}>{t('common', 'nav.shop')}</Link>
+          </Button>
+          <Button size="lg" variant="ghost" asChild>
+            <Link href={`/${locale}/shop?c=women`}>{t('common', 'nav.collections')}</Link>
           </Button>
         </div>
       </section>
