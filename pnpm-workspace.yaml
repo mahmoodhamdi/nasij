@@ -2,3 +2,12 @@ packages:
   - "apps/*"
   - "packages/*"
   - "tooling/*"
+
+# Build scripts approved for execution. Each entry is a package whose
+# postinstall is required for the package to function (native bindings,
+# JIT-built binaries). Review carefully when adding new entries.
+allowBuilds:
+  esbuild: true
+  msgpackr-extract: true
+  sharp: true
+  unrs-resolver: true
