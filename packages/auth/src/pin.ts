@@ -5,6 +5,7 @@ const SALT_BYTES = 16;
 const SCRYPT_N = 1 << 14;
 const SCRYPT_R = 8;
 const SCRYPT_P = 1;
+const SCRYPT_MAX_MEM = 128 * SCRYPT_N * SCRYPT_R * 2;
 const FORMAT_VERSION = 'scrypt-pin-v1';
 
 const PIN_RE = /^\d{4,8}$/;
@@ -37,7 +38,7 @@ export const hashPin = (pin: string): string => {
     throw new Error(`Weak PIN: ${issues.map((i) => i.code).join(',')}`);
   }
   const salt = randomBytes(SALT_BYTES);
-  const derived = scryptSync(pin, salt, KEY_LEN, { N: SCRYPT_N, r: SCRYPT_R, p: SCRYPT_P });
+  const derived = scryptSync(pin, salt, KEY_LEN, { N: SCRYPT_N, r: SCRYPT_R, p: SCRYPT_P, maxmem: SCRYPT_MAX_MEM });
   return `${FORMAT_VERSION}$${SCRYPT_N}$${SCRYPT_R}$${SCRYPT_P}$${salt.toString('hex')}$${derived.toString('hex')}`;
 };
 
@@ -53,7 +54,7 @@ export const verifyPin = (pin: string, storedHash: string): boolean => {
   if (!Number.isFinite(n) || !Number.isFinite(r) || !Number.isFinite(p)) return false;
   let derived: Buffer;
   try {
-    derived = scryptSync(pin, Buffer.from(saltHex, 'hex'), KEY_LEN, { N: n, r, p });
+    derived = scryptSync(pin, Buffer.from(saltHex, 'hex'), KEY_LEN, { N: n, r, p, maxmem: 128 * n * r * 2 });
   } catch {
     return false;
   }

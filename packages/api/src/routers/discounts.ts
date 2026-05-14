@@ -51,7 +51,7 @@ export const evaluateDiscount = (
 };
 
 export const discountsRouter = router({
-  apply: publicProcedure.input(ApplyInput).query(async ({ ctx, input }) => {
+  applyCode: publicProcedure.input(ApplyInput).query(async ({ ctx, input }) => {
     const discount = await ctx.db.query.discounts.findFirst({
       where: and(
         eq(schema.discounts.code, input.code),
