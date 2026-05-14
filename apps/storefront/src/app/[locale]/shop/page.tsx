@@ -71,7 +71,7 @@ const ShopPage = async ({ params, searchParams }: PageProps) => {
             {t('storefront', 'home.collections.title')}
           </h1>
         </div>
-        <nav aria-label={t('plp.filters.size', 'plp.filters.size', { fallback: 'Filters' })} className="flex flex-wrap gap-2">
+        <nav aria-label={t('storefront', 'plp.filters.size')} className="flex flex-wrap gap-2">
           {CATEGORY_FILTERS.map((cat) => {
             const active = (filter.category ?? 'all') === cat.key;
             const href = buildHref({ c: cat.key === 'all' ? undefined : cat.key });
@@ -94,7 +94,7 @@ const ShopPage = async ({ params, searchParams }: PageProps) => {
       </header>
 
       <div className="mb-6 flex items-center gap-3 text-sm text-text-muted">
-        <span>{t('plp.sort.newest', 'plp.sort.newest', { fallback: 'Sort' })}:</span>
+        <span>{t('storefront', 'plp.sort.newest')}:</span>
         {(['newest', 'price-asc', 'price-desc'] as const).map((option) => {
           const active = filter.sort === option;
           const label = {

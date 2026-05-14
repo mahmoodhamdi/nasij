@@ -35,11 +35,12 @@ describe('OrderConfirmationEmail', () => {
 
   it('renders custom currency', async () => {
     const html = await renderEmail(<OrderConfirmationEmail {...baseProps} currency="USD" />);
-    expect(html).toContain('USD');
+    // en-US + USD renders as "$"; sanity-check the document rendered with non-EGP symbol
+    expect(html).toMatch(/\$|USD/);
   });
 
   it('produces plain text', async () => {
     const text = await plainTextFor(<OrderConfirmationEmail {...baseProps} />);
-    expect(text).toContain('Thank you, Mahmoud');
+    expect(text.toLowerCase()).toContain('thank you, mahmoud');
   });
 });

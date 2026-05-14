@@ -1,5 +1,4 @@
-import { act, render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest';
 
 import { AddToCartButton } from './add-to-cart-button.js';
@@ -16,21 +15,22 @@ const INPUT = {
 describe('AddToCartButton', () => {
   beforeEach(() => {
     window.localStorage.clear();
-    vi.useFakeTimers();
+    vi.useFakeTimers({ shouldAdvanceTime: true });
   });
   afterEach(() => {
     vi.useRealTimers();
   });
 
-  it('renders label by default and switches to successLabel after a click', async () => {
-    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+  it('renders label by default and switches to successLabel after a click', () => {
     render(
       <CartProvider>
         <AddToCartButton input={INPUT} label="Add to cart" successLabel="Added" />
       </CartProvider>,
     );
     expect(screen.getByRole('button', { name: 'Add to cart' })).toBeInTheDocument();
-    await user.click(screen.getByRole('button'));
+    act(() => {
+      fireEvent.click(screen.getByRole('button'));
+    });
     expect(screen.getByRole('button', { name: 'Added' })).toBeInTheDocument();
     act(() => {
       vi.advanceTimersByTime(2000);
