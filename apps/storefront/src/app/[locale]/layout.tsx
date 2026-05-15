@@ -6,6 +6,7 @@ import { directionFor } from '@nasij/i18n';
 import '../globals.css';
 
 import { CartProvider } from '~/components/cart-provider.js';
+import { SiteFooter } from '~/components/site-footer.js';
 import { SiteHeader } from '~/components/site-header.js';
 import { requireLocale } from '~/lib/i18n.js';
 
@@ -31,6 +32,7 @@ const RootLayout = async ({ children, params }: LayoutProps) => {
         <CartProvider>
           <SiteHeader locale={locale} />
           {children}
+          <SiteFooter locale={locale} />
         </CartProvider>
       </body>
     </html>

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { formatCurrency, type Locale } from '@nasij/i18n';
 import { ProductCard } from '@nasij/ui';
 
-import { listProducts, type ListProductsFilter, type FixtureProduct } from '~/data/products.js';
+import { imageFor, listProducts, type ListProductsFilter, type FixtureProduct } from '~/data/products.js';
 import { getTranslator, requireLocale } from '~/lib/i18n.js';
 
 export const metadata: Metadata = {
@@ -128,6 +128,7 @@ const ShopPage = async ({ params, searchParams }: PageProps) => {
                 : undefined
             }
             ribbon={product.ribbon ? product.ribbon[locale] : undefined}
+            imageSrc={product.imageUrl ?? imageFor(product.slug)}
             imageAlt={titleFor(product, locale)}
           />
         ))}
