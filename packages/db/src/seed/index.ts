@@ -3,10 +3,13 @@ import { sql } from 'drizzle-orm';
 import { createClient } from '../client.js';
 import * as schema from '../schema/index.js';
 
-import { categoriesSeed, productsSeed, variantsSeed } from './products.js';
+import { categoriesSeed, productsSeed, productImagesSeed, variantsSeed } from './products.js';
 import { locationsSeed, inventorySeed } from './inventory.js';
 import { customersSeed } from './customers.js';
 import { usersSeed } from './users.js';
+import { discountsSeed } from './discounts.js';
+import { ordersSeed, orderItemsSeed, paymentsSeed } from './orders.js';
+import { reviewsSeed } from './reviews.js';
 
 const url = process.env['DATABASE_URL'];
 if (!url) {
@@ -26,7 +29,15 @@ await db.transaction(async (tx) => {
   await tx.insert(schema.categories).values(categoriesSeed);
   await tx.insert(schema.products).values(productsSeed);
   await tx.insert(schema.variants).values(variantsSeed);
+  await tx.insert(schema.productImages).values(productImagesSeed);
   await tx.insert(schema.inventoryLevels).values(inventorySeed);
+  await tx.insert(schema.discounts).values(discountsSeed);
+  await tx.insert(schema.orders).values(ordersSeed);
+  await tx.insert(schema.orderItems).values(orderItemsSeed);
+  if (paymentsSeed.length > 0) {
+    await tx.insert(schema.payments).values(paymentsSeed);
+  }
+  await tx.insert(schema.reviews).values(reviewsSeed);
 });
 
 console.warn('Seed complete.');
