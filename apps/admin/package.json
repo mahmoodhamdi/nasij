@@ -24,9 +24,9 @@
     "@nasij/db": "workspace:*",
     "@nasij/i18n": "workspace:*",
     "@nasij/ui": "workspace:*",
-    "next": "^15.1.3",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "next": "^16.2.7",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
     "zod": "^3.24.1"
   },
   "devDependencies": {
@@ -36,7 +36,7 @@
     "@playwright/test": "^1.49.1",
     "@tailwindcss/postcss": "^4.0.0-beta.8",
     "@types/node": "^22.10.5",
-    "@types/react": "^19.0.2",
+    "@types/react": "^19.2.16",
     "@types/react-dom": "^19.0.2",
     "@vitejs/plugin-react": "^4.3.4",
     "@vitest/coverage-v8": "^2.1.8",
